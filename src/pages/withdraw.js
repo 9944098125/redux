@@ -1,18 +1,26 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import * as balanceActions from "./../action/balanceAction";
 
 export default function Withdraw() {
-  const balance = useSelector((state) => state.balance);
+  const balance = useSelector((state) => state.reducer.balance);
+  const loan = useSelector((state) => state.loanReducer.loan);
+  const loading = useSelector((state) => state.reducer.loading);
   const dispatch = useDispatch();
   function onWithdraw() {
-    dispatch({ type: "WITHDRAW", payload: 5 });
+    dispatch(balanceActions.withdrawAsync());
   }
 
   return (
     <>
       <h1>Welcome to Withdraw Page</h1>
-      <h3>Balance: {balance}</h3>
+      {loading ? (
+        <h2>Making the Withdrawal.....</h2>
+      ) : (
+        <h3>Balance: {balance}</h3>
+      )}
       <button onClick={onWithdraw}>Withdraw</button>
+      <h3>{loan ? "Loan Applied already" : "Apply For Loan"}</h3>
     </>
   );
 }
